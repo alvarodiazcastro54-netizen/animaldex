@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 import { AuthLayout } from './LoginPage'
 
 export default function RegisterPage() {
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -25,7 +26,7 @@ export default function RegisterPage() {
     try {
       const data = await apiFetch('/auth/register', {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, email, password }),
       })
       // Auto-login if token returned, otherwise redirect to login
       const token = data.token || data.access_token
@@ -61,6 +62,21 @@ export default function RegisterPage() {
               ⚠ {error}
             </div>
           )}
+
+          <div>
+            <label className="font-body text-xs text-slate-500 tracking-widest block mb-2">
+              USERNAME
+            </label>
+            <input
+              type="text"
+              required
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="your_username"
+              className="input-field w-full px-4 py-3 rounded-lg font-body text-sm"
+              autoComplete="username"
+            />
+          </div>
 
           <div>
             <label className="font-body text-xs text-slate-500 tracking-widest block mb-2">

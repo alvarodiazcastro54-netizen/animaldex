@@ -52,6 +52,14 @@ export default function Navbar() {
           </NavLink>
           {isAuth ? (
             <div className="flex items-center gap-4">
+              {user?.role === 'admin' && (
+                <Link
+                  to="/animal/new"
+                  className="font-body text-xs bg-acid-500/10 border border-acid-500/40 text-acid-500 hover:bg-acid-500/20 px-4 py-2 rounded transition-all duration-200 tracking-wider"
+                >
+                  + CREAR
+                </Link>
+              )}
               <span className="font-body text-xs text-acid-500/70">
                 {user?.email || user?.username || 'OPERATOR'}
               </span>

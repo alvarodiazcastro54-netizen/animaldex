@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage'
 import AnimalDetailPage from './pages/AnimalDetailPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import CreateAnimalPage from './pages/CreateAnimalPage'
+import EditAnimalPage from './pages/EditAnimalPage'
 
 export default function App() {
   return (
@@ -13,11 +15,13 @@ export default function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/"           element={<HomePage />} />
-          <Route path="/animal/:id" element={<AnimalDetailPage />} />
-          <Route path="/login"      element={<LoginPage />} />
-          <Route path="/register"   element={<RegisterPage />} />
-          <Route path="*"           element={<NotFound />} />
+          <Route path="/"                element={<HomePage />} />
+          <Route path="/animal/new"      element={<CreateAnimalPage />} />
+          <Route path="/animal/:id"      element={<AnimalDetailPage />} />
+          <Route path="/animal/:id/edit" element={<EditAnimalPage />} />
+          <Route path="/login"           element={<LoginPage />} />
+          <Route path="/register"        element={<RegisterPage />} />
+          <Route path="*"               element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

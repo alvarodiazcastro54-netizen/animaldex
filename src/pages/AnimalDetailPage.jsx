@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useAnimal } from '../hooks/useAnimales'
 import { useWikiImage } from '../hooks/useWikiImage'
-import { getStatusInfo, getClassEmoji, getRegionInfo, CONSERVATION_STATUS } from '../utils/api'
+import { getStatusInfo, getClassEmoji, getRegionInfo, apiFetch } from '../utils/api'
 import { WakeLoader, ErrorState } from '../components/LoadingStates'
+import { useAuth } from '../context/AuthContext'
 
 function DetailImage({ nombre_cientifico, nombre_comun, clase }) {
   const imgUrl = useWikiImage(nombre_cientifico)
@@ -98,9 +99,26 @@ function ConservationBar({ status }) {
 
 export default function AnimalDetailPage() {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const { user } = useAuth()
+  const isAdmin = user?.role === 'admin'
   const { animal, loading, error, waking } = useAnimal(id)
   const status = animal ? getStatusInfo(animal.estado_conservacion) : null
   const region = animal ? getRegionInfo(animal.region) : null
+  const [deleting, setDeleting] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+
+  async function handleDelete() {
+    if (!confirmDelete) { setConfirmDelete(true); return }
+    setDeleting(true)
+    try {
+      await apiFetch(`/animales/${id}`, { method: 'DELETE' })
+      navigate('/')
+    } catch (err) {
+      alert(err.message)
+      setDeleting(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-night-950 pt-16">
@@ -214,6 +232,37 @@ export default function AnimalDetailPage() {
                 </svg>
                 VIEW ON WIKIPEDIA
               </a>
+
+              {/* Admin actions */}
+              {isAdmin && (
+                <div className="flex gap-3 mt-4 pt-4 border-t border-night-700">
+                  <Link
+                    to={`/animal/${id}/edit`}
+                    className="font-body text-xs border border-acid-500/40 text-acid-500 hover:bg-acid-500/10 px-4 py-2 rounded-lg tracking-widest transition-all duration-200"
+                  >
+                    ✏ EDITAR
+                  </Link>
+                  <button
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className={`font-body text-xs px-4 py-2 rounded-lg tracking-widest transition-all duration-200 border ${
+                      confirmDelete
+                        ? 'bg-red-500/20 border-red-500 text-red-400'
+                        : 'border-red-500/30 text-red-400/70 hover:bg-red-500/10 hover:border-red-500'
+                    }`}
+                  >
+                    {deleting ? '...' : confirmDelete ? '⚠ CONFIRMAR' : '🗑 ELIMINAR'}
+                  </button>
+                  {confirmDelete && (
+                    <button
+                      onClick={() => setConfirmDelete(false)}
+                      className="font-body text-xs text-slate-500 hover:text-slate-300 tracking-widest transition-colors"
+                    >
+                      CANCELAR
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
