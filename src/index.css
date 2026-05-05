@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-acid: #00ff88;
+  --color-night: #040a0f;
+  --color-grid: rgba(0, 255, 136, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #040a0f;
+  color: #e2e8f0;
+  font-family: 'IBM Plex Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #070f17;
+}
+::-webkit-scrollbar-thumb {
+  background: #00ff8840;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff88;
+}
+
+/* Selection */
+::selection {
+  background: #00ff8833;
+  color: #00ff88;
+}
+
+/* Grid background */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(0, 255, 136, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scan line animation */
+@keyframes scanLine {
+  0% { top: -2px; }
+  100% { top: 100%; }
+}
+
+.scan-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00ff88, transparent);
+  animation: scanLine 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Card hover glow */
+.card-glow {
+  transition: all 0.3s ease;
+}
+
+.card-glow:hover {
+  box-shadow: 0 0 0 1px #00ff8840, 0 20px 40px -10px #00ff8820;
+  transform: translateY(-4px);
+}
+
+/* Glitch text effect */
+@keyframes glitch {
+  0%, 100% { text-shadow: -2px 0 #ff3b5c, 2px 0 #00ff88; }
+  25% { text-shadow: 2px 0 #ff3b5c, -2px 0 #00ff88; }
+  50% { text-shadow: -2px 0 #00ff88, 2px 0 #ff3b5c; }
+  75% { text-shadow: 2px 0 #00ff88, -2px 0 #ff3b5c; }
+}
+
+.glitch:hover {
+  animation: glitch 0.3s steps(2, end) 3;
+}
+
+/* Status badge colors */
+.status-EX { background: #1a0a0a; color: #ff3b5c; border-color: #ff3b5c40; }
+.status-CR { background: #1a0a0a; color: #ff6b35; border-color: #ff6b3540; }
+.status-EN { background: #1a1000; color: #ffb800; border-color: #ffb80040; }
+.status-VU { background: #1a1500; color: #ffd000; border-color: #ffd00040; }
+.status-NT { background: #0a1a0a; color: #7dff7d; border-color: #7dff7d40; }
+.status-LC { background: #0a1a12; color: #00ff88; border-color: #00ff8840; }
+.status-DD { background: #0a0a1a; color: #6b7fff; border-color: #6b7fff40; }
+.status-NE { background: #111827; color: #9ca3af; border-color: #9ca3af40; }
+
+/* Animated border */
+@keyframes borderRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animated-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(from 0deg, transparent 0deg, #00ff88 90deg, transparent 180deg);
+  animation: borderRotate 3s linear infinite;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+/* Loading skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #0c1825 25%, #162d44 50%, #0c1825 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Number badge */
+.number-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+/* Input styles */
+.input-field {
+  background: #0c1825;
+  border: 1px solid #162d44;
+  color: #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #00ff88;
+  box-shadow: 0 0 0 3px #00ff8815;
+}
+
+.input-field::placeholder {
+  color: #4a6580;
+}
