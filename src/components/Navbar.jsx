@@ -50,6 +50,14 @@ export default function Navbar() {
           <NavLink to="/" active={location.pathname === '/'}>
             DATABASE
           </NavLink>
+          <a
+            href="https://animaldex-api-trl4.onrender.com/api/v1/docs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body text-xs tracking-widest text-slate-400 hover:text-acid-500 transition-colors duration-200"
+          >
+            API DOCS
+          </a>
           {isAuth ? (
             <div className="flex items-center gap-4">
               {user?.role === 'admin' && (
